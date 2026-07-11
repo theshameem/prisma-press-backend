@@ -13,6 +13,8 @@ router.post(
 
 router.get("/", postController.getAllPost);
 
+router.get("/:postId", postController.getPostById);
+
 router.get("/stats", auth(Role.ADMIN), postController.getPostsStats);
 
 router.get(
@@ -20,8 +22,6 @@ router.get(
   auth(Role.USER, Role.ADMIN, Role.AUTHOR),
   postController.getMyPosts,
 );
-
-router.get("/:postId", postController.getPostById);
 
 router.patch(
   "/:postId",
