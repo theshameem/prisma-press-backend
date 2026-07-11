@@ -7,6 +7,7 @@ import { notFound } from "./middlewares/notFound";
 import { authRoutes } from "./modules/auth/auth.route";
 import { commentRoutes } from "./modules/comment/comment.route";
 import { postRoutes } from "./modules/post/post.route";
+import { subscriptionRoute } from "./modules/subscription/subscription.route";
 import { userRoutes } from "./modules/users/user.route";
 
 const app: Application = express();
@@ -26,6 +27,7 @@ app.use("/api/users", userRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/posts", postRoutes);
 app.use("/api/comments", commentRoutes);
+app.use("/api/subscription", subscriptionRoute);
 
 app.use(notFound);
 
