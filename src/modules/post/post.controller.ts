@@ -50,8 +50,6 @@ const getPostById = catchAsync(async (req: Request, res: Response) => {
 const getMyPosts = catchAsync(async (req: Request, res: Response) => {
   const userId = req.user?.id;
 
-  console.log("userId: ", userId);
-
   const result = await postService.getMyPosts(userId as string);
 
   sendResponse(res, {
@@ -71,7 +69,7 @@ const updatePost = catchAsync(async (req: Request, res: Response) => {
   const postId = req.params.postId;
   const payload = req.body;
 
-  const result = await postService.updatePost(
+  await postService.updatePost(
     postId as string,
     payload,
     authorId as string,
@@ -82,11 +80,33 @@ const updatePost = catchAsync(async (req: Request, res: Response) => {
     success: true,
     statusCode: httpStatus.OK,
     message: "Post updated successfully",
-    data: result,
+    data: null,
   });
 });
 
-const deletePost = catchAsync(async (req: Request, res: Response) => {});
+const deletePost = catchAsync(async (req: Request, res: Response) => {
+  const authorId = req.user?.id;
+  const isAdmin = req.user?.role === "ADMIN";
+
+  const postId = req.params.postId;
+
+  if (!postId) {
+    throw new Error("Post Id requried In Params");
+  }
+
+  const result = await postService.deletePost(
+    postId as string,
+    authorId as string,
+    isAdmin,
+  );
+
+  sendResponse(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: "Post deleted successfully",
+    data: result,
+  });
+});
 
 export const postController = {
   createPost,
