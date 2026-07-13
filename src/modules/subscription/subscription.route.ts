@@ -11,4 +11,4 @@ router.post(
   subscriptionController.createCheckoutSession,
 );
 
-export const subscriptionRoute = router;
+export const subscriptionRoutes = router;

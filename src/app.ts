@@ -7,7 +7,8 @@ import { notFound } from "./middlewares/notFound";
 import { authRoutes } from "./modules/auth/auth.route";
 import { commentRoutes } from "./modules/comment/comment.route";
 import { postRoutes } from "./modules/post/post.route";
-import { subscriptionRoute } from "./modules/subscription/subscription.route";
+import { premiumRoutes } from "./modules/premium/premium.route";
+import { subscriptionRoutes } from "./modules/subscription/subscription.route";
 import { userRoutes } from "./modules/users/user.route";
 
 const app: Application = express();
@@ -19,11 +20,7 @@ app.use(
   }),
 );
 
-app.post(
-  "/api/subscription/webhook",
-  express.raw({ type: "application/json" }),
-  () => {},
-);
+app.use("/api/subscription/webhook", express.raw({ type: "application/json" }));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -33,7 +30,8 @@ app.use("/api/users", userRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/posts", postRoutes);
 app.use("/api/comments", commentRoutes);
-app.use("/api/subscription", subscriptionRoute);
+app.use("/api/subscription", subscriptionRoutes);
+app.use("/api/premium", premiumRoutes);
 
 app.use(notFound);
 
