@@ -1,7 +1,9 @@
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import express, { Application } from "express";
+import swaggerUi from "swagger-ui-express";
 import config from "./config";
+import swaggerSpec from "./config/swagger.config";
 import { globalErrorHandler } from "./middlewares/globalErrorHandler";
 import { notFound } from "./middlewares/notFound";
 import { authRoutes } from "./modules/auth/auth.route";
@@ -25,6 +27,11 @@ app.use("/api/subscription/webhook", express.raw({ type: "application/json" }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
+
+app.use("/api/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+app.get("/api/docs-json", (_req, res) => {
+  res.json(swaggerSpec);
+});
 
 app.use("/api/users", userRoutes);
 app.use("/api/auth", authRoutes);
